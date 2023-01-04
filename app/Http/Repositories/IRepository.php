@@ -1,6 +1,9 @@
-<?php namespace App\Repositories;
+<?php
 
-interface IRepository {
+namespace App\Http\Repositories;
+
+interface IRepository
+{
     public function all($columns = array('*'));
 
     public function paginate($perPage = 25, $columns = array('*'));
@@ -14,4 +17,6 @@ interface IRepository {
     public function find($id, $columns = array('*'));
 
     public function findBy($field, $value, $columns = array('*'));
+
+    public function getWithRelationship($relationships);
 }

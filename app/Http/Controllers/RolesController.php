@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Entities\RoleEntity;
+use App\Http\Services\RoleService;
 use App\Models\Role;
-use App\Repositories\RoleRepo;
 use App\Utils\ErrorAndSuccessMessages;
 use App\Utils\HttpStatusCode;
 use Exception;
 use Illuminate\Http\Request;
 use \Response;
 use Illuminate\Support\Facades\Log;
+
 
 class RolesController extends Controller
 {
@@ -26,7 +28,7 @@ class RolesController extends Controller
      * @param  mixed $role
      * @return void
      */
-    function __construct(RoleRepo $role)
+    function __construct(RoleService $role)
     {
         $this->roleRepo = $role;
     }
@@ -39,7 +41,12 @@ class RolesController extends Controller
     public function index()
     {
         try {
-            $roles = $this->roleRepo->all();
+            $roles = array();
+            $dbRoles = $this->roleRepo->all();
+            foreach ($dbRoles as $role) {
+                $newRole = new RoleEntity($role);
+                array_push($roles, $newRole);
+            }
             if (!isset($roles))
                 return Response::make(ErrorAndSuccessMessages::getDataFailed, HttpStatusCode::BadRequest);
             return Response::json([['roles' => $roles]], HttpStatusCode::OK);

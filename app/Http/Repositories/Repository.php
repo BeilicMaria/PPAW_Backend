@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Http\Repositories;
+
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
-use App\Repositories\IRepository;
+
 use \Exception;
 
 abstract class Repository implements IRepository
@@ -52,6 +53,12 @@ abstract class Repository implements IRepository
     }
 
 
+    /**
+     * all
+     *
+     * @param  mixed $columns
+     * @return void
+     */
     public function all($columns = array('*'))
     {
         return $this->model->get($columns);
@@ -121,19 +128,18 @@ abstract class Repository implements IRepository
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
 
-    public function resetScope()
-    {
-        $this->skipCriteria(false);
-        return $this;
-    }
 
-    public function skipCriteria($status = true)
-    {
-        $this->skipCriteria = $status;
-    }
 
-    public function getByCriteria(callable $criteriaCallback)
+
+    /**
+     * getWithRelationship
+     *
+     * @param  mixed $relationships
+     * @return void
+     */
+    public function getWithRelationship($relationships)
     {
-        $criteriaCallback($this->model);
+        $all = $this->model->get(array('*'));
+        return $all->load($relationships);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Entities\UserEntity;
+use App\Http\Services\UserService;
 use App\Models\User;
 use App\Utils\ErrorAndSuccessMessages;
 use App\Utils\HttpStatusCode;
@@ -11,15 +13,37 @@ use \Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+
 class UsersController extends Controller
 {
 
-    function __construct()
-    {
-    }
     /**
-     * index get all users
+     * useService
      *
+     * @var mixed
+     */
+    protected $useService;
+
+    /**
+     * __construct
+     *
+     * @param  mixed $user
+     * @return void
+     */
+    function __construct(UserService $user)
+    {
+        $this->useService = $user;
+    }
+
+
+    /**
+     * index
+     *
+     * @param  mixed $page
+     * @param  mixed $per_page
+     * @param  mixed $sort
+     * @param  mixed $order
+     * @param  mixed $filter
      * @return void
      */
     public function index($page = null, $per_page = null, $sort = null, $order = null, $filter = null)
@@ -29,25 +53,14 @@ class UsersController extends Controller
                 $page = 1;
                 $per_page = 20;
             }
-            $users = User::with(["role" => function ($query) {
-                $query->select('id', 'role');
-            }, "address" => function ($query) {
-                $query->select('id', 'country', 'county', 'city', 'address');
-            }])->skip($per_page * ($page - 1))->take($per_page);
-            $count = DB::table('users');
-            if (isset($filter) && $filter != "" && $filter != "null") {
-                $users->where('name', 'like', "%" . $filter . "%");
-                $count->where('name', 'like', "%" . $filter . "%");
-            }
-            $count = $count->count();
-            if (isset($sort) && isset($order))
-                $users->orderBy($sort, $order);
-            else {
-                $users->orderBy("id", "desc");
-            }
+            $DBusers = $this->useService->getWithRelationship('role');
+            $users = array();
 
-            $users = $users->get();
-            return Response::json([["total_count" => $count, "items" => $users]], HttpStatusCode::OK);
+            foreach ($DBusers as $user) {
+                $newUser = new UserEntity($user);
+                array_push($users, $newUser);
+            }
+            return Response::json([["items" => $users]], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e->getMessage());
             return Response::json($e->getMessage(), HttpStatusCode::BadRequest);

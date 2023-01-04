@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Http\Services;
 
+use App\Http\Repositories\Repository;
 use Illuminate\Container\Container as App;
 
-class UserRepo extends Repository
+class UserService extends Repository
 {
 
     /**

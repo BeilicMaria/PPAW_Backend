@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
             array('role' => "user"),
         );
         for ($i = 0; $i < count($roles); $i++) {
-            DB::table('user_roles')->insert([
+            DB::table('roles')->insert([
                 'role' => $roles[$i]['role'],
                 'created_at' => date("y-m-d h:i:s"),
                 'updated_at' => date("y-m-d h:i:s")
