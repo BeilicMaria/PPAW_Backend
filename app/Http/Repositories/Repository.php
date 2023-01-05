@@ -69,9 +69,9 @@ abstract class Repository implements IRepository
      * @param array $columns
      * @return mixed
      */
-    public function paginate($perPage = 15, $columns = array('*'))
+    public function paginate($perPage = 20, $page = 1)
     {
-        return $this->model->paginate($perPage, $columns);
+        return $this->model->skip($perPage * ($page - 1))->take($perPage);
     }
 
     /**
@@ -103,16 +103,20 @@ abstract class Repository implements IRepository
         return $this->model->destroy($id);
     }
 
+
     /**
      * @param $id
      * @param array $columns
      * @return mixed
      */
-    public function find($id, $columns = array('*'))
+    public function find($id,  $relationships = null, $columns = array('*'))
     {
         $model = $this->model->find($id, $columns);
         if (!isset($model)) {
             throw new Exception("Repository - model not found!");
+        }
+        if (isset($relationships)) {
+            return  $model->load($relationships);
         }
         return $model;
     }
@@ -127,8 +131,6 @@ abstract class Repository implements IRepository
     {
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
-
-
 
 
     /**

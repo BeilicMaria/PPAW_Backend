@@ -30,6 +30,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 //..............................USER............................
 Route::get('users/{page?}/{per_page?}/{sort?}/{order?}/{filter?}', [UsersController::class, 'index']);
 Route::get('user/{id}', [UsersController::class, 'get']);
+Route::post('user', [UsersController::class, 'post']);
+Route::post('user/{id}', [UsersController::class, 'delete']);
+Route::put('user', [UsersController::class, 'put']);
 //..............................ROLE............................
 Route::get('roles', [RolesController::class, 'index']);
 Route::get('role/{id}', [RolesController::class, 'get']);

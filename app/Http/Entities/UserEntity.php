@@ -7,7 +7,6 @@ class UserEntity
     public $lastName;
     public $firstName;
     public $email;
-    public $password;
     public $phone;
     public $dateOfBirth;
     public $status;
@@ -26,10 +25,9 @@ class UserEntity
         $this->lastName = $user->lastName;
         $this->firstName = $user->firstName;
         $this->email = $user->email;
-        $this->password = $user->password;
         $this->phone = $user->phone;
         $this->dateOfBirth = $user->dateOfBirth;
         $this->status = $user->status;
-        $this->role = $user->role['role'];
+        $this->role = $user->role->role;
     }
 }

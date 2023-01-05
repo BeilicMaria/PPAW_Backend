@@ -16,7 +16,8 @@ class RoleSeeder extends Seeder
     {
         $roles = array(
             array('role' => "admin"),
-            array('role' => "user"),
+            array('role' => "student"),
+            array('role' => "teacher"),
         );
         for ($i = 0; $i < count($roles); $i++) {
             DB::table('roles')->insert([

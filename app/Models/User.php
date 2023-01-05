@@ -54,10 +54,53 @@ class User extends Authenticatable
 
 
     /**
+     * role
+     *
      * Get the role associated with the user.
+     * @return void
      */
     public function role()
     {
         return $this->hasOne(Role::class, "id", "FK_roleId");
+    }
+
+    /**
+     * student
+     * Get the student that owns the user.
+     * @return void
+     */
+    public function student()
+    {
+        return $this->belongsTo(Student::class,  "FK_userId");
+    }
+
+    /**
+     * grade
+     * Get the grade that owns the student.
+     * @return void
+     */
+    public function studentGrade()
+    {
+        return $this->belongsTo(Grade::class,  "FK_studentId");
+    }
+
+    /**
+     * grade
+     * Get the grade that owns the teacher.
+     * @return void
+     */
+    public function teacherGrade()
+    {
+        return $this->belongsTo(Grade::class,  "FK_teacherId");
+    }
+
+    /**
+     * course
+     * Get the course that owns the teacher.
+     * @return void
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class,  "FK_teacherId");
     }
 }
