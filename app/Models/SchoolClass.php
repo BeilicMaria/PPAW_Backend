@@ -13,7 +13,8 @@ class SchoolClass extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'schoolYear'
+        'schoolYear',
+        'archived',
     ];
 
     /* RELATIONSHIPS*/

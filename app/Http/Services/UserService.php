@@ -51,7 +51,7 @@ class UserService extends Repository
         $user = User::with(["role" => function ($query) {
             $query->select('id', 'role');
         },])->where('status', true)->find($id);
-        $item = $this->cache->set($id, $user, ['user']);
+        $this->cache->set($id, $user, ['user']);
         return $user;
     }
 

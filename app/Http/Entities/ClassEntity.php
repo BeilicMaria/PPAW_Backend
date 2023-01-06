@@ -8,6 +8,7 @@ class ClassEntity
     public $id;
     public $name;
     public $schoolYear;
+    public $archived;
 
 
     /**
@@ -21,5 +22,6 @@ class ClassEntity
         $this->id = $schoolClass->id;
         $this->name = $schoolClass->name;
         $this->schoolYear = $schoolClass->schoolYear;
+        $this->archived = $schoolClass->archived;
     }
 }
