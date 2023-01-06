@@ -13,36 +13,29 @@ interface ICache
      * @return mixed The value of the item from the cache, or $default in case of cache miss.
      *
      */
-    public function get(string $key, $default = null);
+    public function get($key, $default = null);
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store. Must be serializable.
-     * @param null|int|\DateInterval $cacheTime   Optional. The TTL value of this item. If no value is sent and
-     *                                      the driver supports TTL then the library may set a default value
-     *                                      for it or let the driver take care of that.
-     *
+     *  @param array                 $tag
      * @return bool True on success and false on failure.
      *
      */
-    public function set(string $key, string $value);
+    public function set($key,  $value, $tags = [null]);
 
     /**
      * Determines whether an item is present in the cache.
      *
-     * NOTE: It is recommended that has() is only to be used for cache warming type purposes
-     * and not to be used within your live applications operations for get/set, as this method
-     * is subject to a race condition where your has() will return true and immediately after,
-     * another script can remove it, making the state of your app out of date.
      *
      * @param string $key The cache item key.
      *
      * @return bool
      *
      */
-    public function isSet(string $key);
+    public function isSet($key);
 
     /**
      * Delete an item from the cache by its unique key.
@@ -52,16 +45,17 @@ interface ICache
      * @return bool True if the item was successfully removed. False if there was an error.
      *
      */
-    public function remove(string $key);
+    public function remove($key);
+
 
 
     /**
+     * removeByPattern
      *
-     *
-     * @param  mixed $pattern
+     * @param  mixed $tags
      * @return void
      */
-    public function removeByPattern(string $pattern);
+    public function removeByPattern(array $tags);
 
     /**
      * Wipes clean the entire cache's keys.

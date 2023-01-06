@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
-class UsersController extends Controller
+class UserController extends Controller
 {
 
     /**
@@ -69,7 +69,7 @@ class UsersController extends Controller
     public function get($id)
     {
         try {
-            $user = $this->useService->find($id, 'role');
+            $user = $this->useService->get($id);
             if (!isset($user))
                 return Response::make(ErrorAndSuccessMessages::getDataFailed, HttpStatusCode::BadRequest);
             $newUser = new UserEntity($user);

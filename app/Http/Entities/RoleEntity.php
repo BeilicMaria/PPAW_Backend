@@ -4,8 +4,9 @@ namespace App\Http\Entities;
 
 class RoleEntity
 {
-    public $role;
     public $id;
+    public $role;
+
 
 
     /**
@@ -16,7 +17,7 @@ class RoleEntity
      */
     function __construct($role)
     {
-        $this->role = $role->role;
         $this->id = $role->id;
+        $this->role = $role->role;
     }
 }

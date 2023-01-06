@@ -3,6 +3,7 @@
 namespace App\Http\Entities;
 class UserEntity
 {
+    public $id;
     public $userName;
     public $lastName;
     public $firstName;
@@ -21,6 +22,7 @@ class UserEntity
      */
     function __construct($user)
     {
+        $this->id = $user->id;
         $this->userName = $user->userName;
         $this->lastName = $user->lastName;
         $this->firstName = $user->firstName;

@@ -4,8 +4,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +28,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 //..............................USER............................
-Route::get('users/{page?}/{per_page?}/{sort?}/{order?}/{filter?}', [UsersController::class, 'index']);
-Route::get('user/{id}', [UsersController::class, 'get']);
-Route::post('user', [UsersController::class, 'post']);
-Route::post('user/{id}', [UsersController::class, 'delete']);
-Route::put('user', [UsersController::class, 'put']);
+Route::get('users/{page?}/{per_page?}/{sort?}/{order?}/{filter?}', [UserController::class, 'index']);
+Route::get('user/{id}', [UserController::class, 'get']);
+Route::post('user', [UserController::class, 'post']);
+Route::post('user/{id}', [UserController::class, 'delete']);
+Route::put('user', [UserController::class, 'put']);
 //..............................ROLE............................
-Route::get('roles', [RolesController::class, 'index']);
-Route::get('role/{id}', [RolesController::class, 'get']);
+Route::get('roles', [RoleController::class, 'index']);
+Route::get('role/{id}', [RoleController::class, 'get']);
