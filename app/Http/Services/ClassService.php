@@ -65,6 +65,23 @@ class ClassService extends Repository
             $cachedClasses = $this->cache->get('classes');
             return [$cachedClasses, count($cachedClasses)];
         } else {
+            if (!isset($page) && !isset($per_pag)) {
+                $page = 1;
+                $per_page = 20;
+            }
+            $classes = SchoolClass::where('archived', '=', false)->skip($per_page * ($page - 1))->take($per_page);
+            if (isset($filter) && $filter != "" && $filter != "null") {
+                $classes->where('name', 'like', "%" . $filter . "%");
+            }
+            $count = $classes->count();
+            if (isset($sort) && isset($order) && $order !== "null")
+                $classes->orderBy($sort, $order);
+            else {
+                $classes->orderBy("id", "desc");
+            }
+            $classes = $classes->get();
+            $this->cache->set('classes', $classes);
+            return [$classes, $count];
         }
     }
 
@@ -88,7 +105,45 @@ class ClassService extends Repository
             return null;
         }
         $data = $request->all();
-        $classes = $this->create($data);
-        return $classes;
+        $_class = $this->create($data);
+        return $_class;
+    }
+
+    /**
+     * updateClass
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
+    public function updateClass($request, $id)
+    {
+        if ($this->cache->isSet($id)) {
+            $this->cache->remove($id);
+            $this->cache->remove('classes');
+        }
+        $_class = $this->find($id);
+        $_class->name = $request->input('name');
+        $_class->schoolYear = $request->input('schoolYear');
+        $_class->archived = $request->input('archived');
+        $_class->save();
+        return $_class;
+    }
+
+    /**
+     * softDelete
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function softDelete($id)
+    {
+
+        $this->cache->remove($id);
+        $this->cache->remove('classes');
+        $_class = $this->find($id);
+        $_class->archived = true;
+        $_class->save();
+        return $_class;
     }
 }
