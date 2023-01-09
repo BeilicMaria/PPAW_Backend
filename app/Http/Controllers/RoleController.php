@@ -32,9 +32,9 @@ class RoleController extends Controller
     }
 
     /**
-     * getIndex get all roles
+     * index: get all roles
      *
-     * @return void
+     * @return object
      */
     public function index()
     {

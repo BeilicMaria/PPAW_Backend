@@ -26,7 +26,7 @@ class RoleService extends Repository
     }
 
     /**
-     * getAll
+     * getAll: get all roles
      *
      * @return void
      */

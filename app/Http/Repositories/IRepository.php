@@ -5,7 +5,7 @@ namespace App\Http\Repositories;
 interface IRepository
 {
     /**
-     * all
+     * all: get al the items
      *
      * @param  mixed $columns
      * @return void
@@ -13,7 +13,7 @@ interface IRepository
     public function all($columns = array('*'));
 
     /**
-     * paginate
+     * paginate: get only a number of items depending on page/perPage
      *
      * @param  mixed $perPage
      * @param  mixed $page
@@ -22,7 +22,7 @@ interface IRepository
     public function paginate($perPage = 20, $page = 1);
 
     /**
-     * create
+     * create: create new item
      *
      * @param  mixed $data
      * @return void
@@ -30,7 +30,7 @@ interface IRepository
     public function create(array $data);
 
     /**
-     * update
+     * update: update item
      *
      * @param  mixed $data
      * @param  mixed $id
@@ -39,7 +39,7 @@ interface IRepository
     public function update(array $data, $id);
 
     /**
-     * delete
+     * delete: delete item
      *
      * @param  mixed $id
      * @return void
@@ -47,7 +47,7 @@ interface IRepository
     public function delete($id);
 
     /**
-     * find
+     * find: find item by id
      *
      * @param  mixed $id
      * @param  mixed $relationships
@@ -57,7 +57,7 @@ interface IRepository
     public function find($id,  $relationships = null, $columns = array('*'));
 
     /**
-     * findBy
+     * findBy: find item by attribute
      *
      * @param  mixed $field
      * @param  mixed $value
@@ -67,7 +67,7 @@ interface IRepository
     public function findBy($field, $value, $columns = array('*'));
 
     /**
-     * getWithRelationship
+     * getWithRelationship: get item with Eloquent: Relationships
      *
      * @param  mixed $relationships
      * @return void

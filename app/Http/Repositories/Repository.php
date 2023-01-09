@@ -5,7 +5,6 @@ namespace App\Http\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
-
 use \Exception;
 
 abstract class Repository implements IRepository

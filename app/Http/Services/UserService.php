@@ -12,7 +12,13 @@ use Illuminate\Http\Request;
 class UserService extends Repository
 {
 
+    /**
+     * cache
+     *
+     * @var mixed
+     */
     private $cache;
+
     /**
      * __construct
      *
@@ -36,14 +42,13 @@ class UserService extends Repository
     }
 
     /**
-     * get
+     * get user by id
      *
      * @param  mixed $id
      * @return void
      */
     public function get($id)
     {
-
         $cacheUser = $this->cache->get($id, 'user');
         if (isset($cacheUser)) {
             return $cacheUser;
@@ -58,7 +63,7 @@ class UserService extends Repository
 
 
     /**
-     * getAll
+     * getAll: get all users with pagination
      *
      * @param  mixed $page
      * @param  mixed $per_page
@@ -99,7 +104,7 @@ class UserService extends Repository
 
 
     /**
-     * createUser
+     * createUser: create new user
      *
      * @param  mixed $request
      * @return void
@@ -131,7 +136,7 @@ class UserService extends Repository
     }
 
     /**
-     * updateUser
+     * updateUser: update user
      *
      * @param  mixed $request
      * @param  mixed $id
@@ -164,7 +169,6 @@ class UserService extends Repository
      */
     public function softDelete($id)
     {
-
         $this->cache->remove($id);
         $this->cache->remove('users');
         $user = $this->find($id);

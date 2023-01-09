@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
+
 class UserController extends Controller
 {
 
@@ -35,7 +36,7 @@ class UserController extends Controller
 
 
     /**
-     * index
+     * index: get all users
      *
      * @param  mixed $page
      * @param  mixed $per_page
@@ -48,12 +49,13 @@ class UserController extends Controller
     {
         try {
             $users = array();
+            //replace with automapper
             list($dbUsers, $count) = $this->useService->getAll($page, $per_page, $sort, $order, $filter);
             foreach ($dbUsers as $user) {
-                $newUser = new UserEntity($user);
-                array_push($users, $newUser);
+                $dtoUser = new UserEntity($user);
+                array_push($users, $dtoUser);
             }
-            return Response::json(["total_count" => $count, "items" => $users], HttpStatusCode::OK);
+            return Response::json(["total_count" => $count, "users" => $users], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e->getMessage());
             return Response::json($e->getMessage(), HttpStatusCode::BadRequest);
@@ -72,8 +74,9 @@ class UserController extends Controller
             $user = $this->useService->get($id);
             if (!isset($user))
                 return Response::make(ErrorAndSuccessMessages::getDataFailed, HttpStatusCode::BadRequest);
-            $newUser = new UserEntity($user);
-            return Response::json(["user" => $newUser], HttpStatusCode::OK);
+            //replace with automapper
+            $dtoUser = new UserEntity($user);
+            return Response::json(["user" => $dtoUser], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
             return Response::json($e, HttpStatusCode::BadRequest);
@@ -82,7 +85,7 @@ class UserController extends Controller
 
 
     /**
-     * post
+     * post: create new user
      *
      * @param  mixed $request
      * @return void
@@ -90,8 +93,8 @@ class UserController extends Controller
     public function post(Request $request)
     {
         try {
-            $newUser = $this->useService->createUser($request);
-            if (!isset($newUser))
+            $user = $this->useService->createUser($request);
+            if (!isset($user))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
             return Response::make(ErrorAndSuccessMessages::successRegistration, HttpStatusCode::OK);
         } catch (Exception $e) {
@@ -103,7 +106,7 @@ class UserController extends Controller
 
 
     /**
-     * put
+     * put: update user
      *
      * @param  mixed $request
      * @param  mixed $id
@@ -127,7 +130,7 @@ class UserController extends Controller
     }
 
     /**
-     * delete
+     * delete: soft delete user
      *
      * @param  mixed $id
      * @return void
