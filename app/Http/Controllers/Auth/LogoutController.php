@@ -28,8 +28,7 @@ class LogoutController extends Controller
     {
         try {
             $value = $request->bearerToken();
-            $id = (new Parser())->parse($value)->getClaim('jti');
-
+            $id = app(Parser::class)->parse($value)->claims()->get('jti');
             DB::table('oauth_access_tokens')
                 ->where('id', $id)
                 ->update([

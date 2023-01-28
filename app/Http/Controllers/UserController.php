@@ -45,20 +45,21 @@ class UserController extends Controller
      * @param  mixed $filter
      * @return void
      */
-    public function index($page = null, $per_page = null, $sort = null, $order = null, $filter = null)
+    public function index($page = null, $per_page = null, $startDate = null, $endDate = null, $order = null, $status = null, $filter = null)
     {
         try {
             $users = array();
             //replace with automapper
-            list($dbUsers, $count) = $this->useService->getAll($page, $per_page, $sort, $order, $filter);
+            list($dbUsers, $count) = $this->useService->getAll($page, $per_page, $startDate, $endDate, $order, $status, $filter);
             foreach ($dbUsers as $user) {
                 $dtoUser = new UserEntity($user);
                 array_push($users, $dtoUser);
             }
+            Log::debug("S-au returnat toti utilizatorii.");
             return Response::json(["total_count" => $count, "users" => $users], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e->getMessage());
-            return Response::json($e->getMessage(), HttpStatusCode::BadRequest);
+            return Response::make(ErrorAndSuccessMessages::genericServerError, HttpStatusCode::BadRequest);
         }
     }
 
@@ -76,10 +77,11 @@ class UserController extends Controller
                 return Response::make(ErrorAndSuccessMessages::getDataFailed, HttpStatusCode::BadRequest);
             //replace with automapper
             $dtoUser = new UserEntity($user);
+            Log::debug("S-a returnat un utilizator.");
             return Response::json(["user" => $dtoUser], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make(ErrorAndSuccessMessages::genericServerError, HttpStatusCode::BadRequest);
         }
     }
 
@@ -93,13 +95,18 @@ class UserController extends Controller
     public function post(Request $request)
     {
         try {
+            $alreadyUsedName = $this->useService->checkIfUserExists('userName', $request->input('userName'));
+            if ($alreadyUsedName) return Response::make(ErrorAndSuccessMessages::alreadyUsedName, HttpStatusCode::BadRequest);
+            $alreadyUsedEmail = $this->useService->checkIfUserExists('email', $request->input('email'));
+            if ($alreadyUsedEmail) return Response::make(ErrorAndSuccessMessages::alreadyUsedEmail, HttpStatusCode::BadRequest);
             $user = $this->useService->createUser($request);
             if (!isset($user))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Operatia de adaugare a unui utilizator s-a efectuat cu succes.");
             return Response::make(ErrorAndSuccessMessages::successRegistration, HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make(ErrorAndSuccessMessages::genericServerError, HttpStatusCode::BadRequest);
         }
     }
 
@@ -122,10 +129,11 @@ class UserController extends Controller
             $updatedUser = $this->useService->updateUser($request, $id);
             if (!isset($updatedUser))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Actualizarea utilizatorului s-a efectuat cu succes.");
             return Response::json(["user" => $updatedUser], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make(ErrorAndSuccessMessages::genericServerError, HttpStatusCode::BadRequest);
         }
     }
 
@@ -144,10 +152,11 @@ class UserController extends Controller
             $deletedUser = $this->useService->softDelete($id);
             if (!isset($deletedUser))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Stergere (logica) a utilizator s-a efectuat cu succes.");
             return Response::json(["user" => $deletedUser], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make(ErrorAndSuccessMessages::genericServerError, HttpStatusCode::BadRequest);
         }
     }
 }

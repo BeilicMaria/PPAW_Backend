@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepo;
+use App\Http\Services\UserService;
 use App\Utils\ErrorAndSuccessMessages;
 use Illuminate\Http\Request;
 use App\Utils\HttpStatusCode;
@@ -28,7 +28,7 @@ class LoginController extends Controller
      * @param  mixed $user
      * @return void
      */
-    function __construct(UserRepo $user)
+    function __construct(UserService $user)
     {
         $this->userRepo = $user;
     }
@@ -44,19 +44,19 @@ class LoginController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'userName' => 'required|string|max:55',
+                'email' => 'required',
                 'password' => 'required',
             ]);
             if ($validator->fails()) {
                 return response(['errors' => $validator->errors()->all()], HttpStatusCode::Unauthorized);
             }
             $data = [
-                'userName' => $request->userName,
+                'email' => $request->email,
                 'password' => $request->password
             ];
             if (auth()->attempt($data)) {
                 $accessToken = auth()->user()->createToken('authToken')->accessToken;
-                $user = $this->userRepo->findBy('userName', $request->userName);
+                $user = $this->userRepo->findBy('email', $request->email);
                 return response()->json(['user' => $user, 'access_token' => $accessToken], HttpStatusCode::OK);
             } else {
                 return response()->json(ErrorAndSuccessMessages::loginFailed, HttpStatusCode::Unauthorized);

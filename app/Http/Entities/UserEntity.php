@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Entities;
+
 class UserEntity
 {
     public $id;
@@ -12,6 +13,7 @@ class UserEntity
     public $dateOfBirth;
     public $status;
     public $role;
+    public $FK_roleId;
 
 
     /**
@@ -31,5 +33,6 @@ class UserEntity
         $this->dateOfBirth = $user->dateOfBirth;
         $this->status = $user->status;
         $this->role = $user->role->role;
+        $this->FK_roleId = $user->FK_roleId;
     }
 }

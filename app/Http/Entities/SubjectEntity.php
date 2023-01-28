@@ -9,6 +9,8 @@ class SubjectEntity
     public $name;
     public $credits;
     public $isMandatory;
+    public $deleted;
+
 
 
     /**
@@ -23,5 +25,6 @@ class SubjectEntity
         $this->name = $subject->name;
         $this->credits = $subject->credits;
         $this->isMandatory = $subject->isMandatory;
+        $this->deleted = $subject->deleted;
     }
 }

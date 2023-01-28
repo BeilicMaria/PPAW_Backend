@@ -54,7 +54,7 @@ class SubjectService extends Repository
      * @param  mixed $filter
      * @return void
      */
-    public function getAll($page, $per_page, $sort, $order, $filter)
+    public function getAll($page, $per_page, $filter)
     {
         if ($this->cache->isSet('subjects')) {
             $cachedSubjects = $this->cache->get('subjects');
@@ -69,11 +69,8 @@ class SubjectService extends Repository
                 $subjects->where('name', 'like', "%" . $filter . "%");
             }
             $count = $subjects->count();
-            if (isset($sort) && isset($order) && $order !== "null")
-                $subjects->orderBy($sort, $order);
-            else {
-                $subjects->orderBy("id", "desc");
-            }
+            $subjects->orderBy("id", "desc");
+            $subjects->where('deleted', '=', false);
             $subjects = $subjects->get();
             $this->cache->set('subjects', $subjects);
             return [$subjects, $count];
@@ -86,13 +83,13 @@ class SubjectService extends Repository
      * @param  mixed $request
      * @return void
      */
-    public function createSubject(Request $request)
+    public function createSubject($request)
     {
         if ($this->cache->isSet('subjects')) {
             $this->cache->remove('subjects');
         }
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:55|unique:users',
+            'name' => 'required|string|max:55',
             'credits' => 'required|numeric',
             'isMandatory' => 'required|boolean',
         ]);
@@ -113,14 +110,30 @@ class SubjectService extends Repository
      */
     public function updateSubject($request, $id)
     {
-        if ($this->cache->isSet($id)) {
-            $this->cache->remove($id);
-            $this->cache->remove('subjects');
-        }
+
+        $this->cache->remove($id);
+        $this->cache->clear();
         $subject = $this->find($id);
         $subject->name = $request->input('name');
         $subject->credits = $request->input('credits');
         $subject->isMandatory = $request->input('isMandatory');
+        $subject->save();
+        return $subject;
+    }
+
+
+    /**
+     * softDelete
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function softDelete($id)
+    {
+        $this->cache->remove($id);
+        $this->cache->remove('subjects');
+        $subject = $this->find($id);
+        $subject->deleted = true;
         $subject->save();
         return $subject;
     }

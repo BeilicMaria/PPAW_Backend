@@ -34,7 +34,7 @@ class ErrorAndSuccessMessages
     const fileDoesNotExist = "Fișierele selectate nu există.";
     const incompleteInput = "Nu au fost completate toate câmpurile";
     const missingTemplate = "Nu există șablon pentru scopul precizat.";
-    const validationError = "Eroare la validatrea datelor.";
+    const validationError = "Eroare la validarea datelor.";
     const deleteFailed = "Ștergerea a eșuat.";
     const deleteSuccess = "Ștergerea a fost finalizată cu succes.";
     const invalidRecaptcha = "Invalid recaptcha.";
@@ -42,4 +42,9 @@ class ErrorAndSuccessMessages
     const registerConfirmationSubject = "Confirmare cerere de înregistrare";
     const registerConfirmationMessage = "Îți mulțumim că ai ales platforma VETMED. Îți vom trimite o confirmare de îndată ce cererea ta va fi procesată.";
     const newRegister = "Solicitare nouă";
+    const genericServerError = "Acestă operație nu poate fi efectuată. Contactează administratorul pentru detalii.";
+    const alreadyUsedName = "Numele de utilizator este deja utilizat.";
+    const alreadyUsedEmail = "Email existent. Folosiți altă adresă.";
+    const addSucces = "Infomațiile au fost salvate cu succes!";
+    const addFail = "Eroare la adăugarea datelor.";
 }

@@ -59,7 +59,7 @@ class ClassService extends Repository
      * @param  mixed $filter
      * @return void
      */
-    public function getAll($page, $per_page, $sort, $order, $filter)
+    public function getAll($page, $per_page,  $filter)
     {
         if ($this->cache->isSet('classes')) {
             $cachedClasses = $this->cache->get('classes');
@@ -74,11 +74,7 @@ class ClassService extends Repository
                 $classes->where('name', 'like', "%" . $filter . "%");
             }
             $count = $classes->count();
-            if (isset($sort) && isset($order) && $order !== "null")
-                $classes->orderBy($sort, $order);
-            else {
-                $classes->orderBy("id", "desc");
-            }
+            $classes->orderBy("id", "desc");
             $classes = $classes->get();
             $this->cache->set('classes', $classes);
             return [$classes, $count];
@@ -91,7 +87,7 @@ class ClassService extends Repository
      * @param  mixed $request
      * @return void
      */
-    public function createClass(Request $request)
+    public function createClass($request)
     {
         if ($this->cache->isSet('classes')) {
             $this->cache->remove('classes');

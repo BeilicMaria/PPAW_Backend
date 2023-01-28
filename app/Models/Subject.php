@@ -15,6 +15,7 @@ class Subject extends Model
         'name',
         'credits',
         'isMandatory',
+        'deleted',
     ];
 
     /* RELATIONSHIPS*/

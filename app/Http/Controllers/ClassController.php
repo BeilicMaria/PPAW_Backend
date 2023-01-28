@@ -41,20 +41,20 @@ class ClassController extends Controller
      * @param  mixed $filter
      * @return void
      */
-    public function index($page = null, $per_page = null, $sort = null, $order = null, $filter = null)
+    public function index($page = null, $per_page = null, $filter = null)
     {
         try {
             $classes = array();
-            list($dbClasses, $count) = $this->classService->getAll($page, $per_page, $sort, $order, $filter);
+            list($dbClasses, $count) = $this->classService->getAll($page, $per_page, $filter);
             foreach ($dbClasses as $_class) {
                 $newClass = new ClassEntity($_class);
                 array_push($classes, $newClass);
             }
-            return Response::json(["total_count" => $count, "items" => $classes], HttpStatusCode::OK);
+            return Response::json(["total_count" => $count, "classes" => $classes], HttpStatusCode::OK);
         } catch (Exception $e) {
 
             Log::debug($e->getMessage());
-            return Response::json($e->getMessage(), HttpStatusCode::BadRequest);
+            return Response::make($e->getMessage(), HttpStatusCode::BadRequest);
         }
     }
 
@@ -73,7 +73,7 @@ class ClassController extends Controller
             return Response::json(["class" => $newClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make($e, HttpStatusCode::BadRequest);
         }
     }
 
@@ -92,7 +92,7 @@ class ClassController extends Controller
             return Response::make(ErrorAndSuccessMessages::successRegistration, HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make($e, HttpStatusCode::BadRequest);
         }
     }
 
@@ -116,7 +116,7 @@ class ClassController extends Controller
             return Response::json(["class" => $updatedClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make($e, HttpStatusCode::BadRequest);
         }
     }
 
@@ -138,7 +138,7 @@ class ClassController extends Controller
             return Response::json(["class" => $deletedClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
-            return Response::json($e, HttpStatusCode::BadRequest);
+            return Response::make($e, HttpStatusCode::BadRequest);
         }
     }
 }
