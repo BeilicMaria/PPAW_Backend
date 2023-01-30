@@ -37,15 +37,15 @@ interface ICache
      */
     public function isSet($key);
 
+
     /**
-     * Delete an item from the cache by its unique key.
+     * remove Delete an item from the cache by its unique key.
      *
-     * @param string $key The unique cache key of the item to delete.
-     *
+     * @param  mixed $key  $key The unique cache key of the item to delete.
+     * @param  mixed $tags
      * @return bool True if the item was successfully removed. False if there was an error.
-     *
      */
-    public function remove($key);
+    public function remove($key, $tags = null);
 
 
 

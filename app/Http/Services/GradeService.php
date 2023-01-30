@@ -30,4 +30,18 @@ class GradeService extends Repository
     {
         return '\App\Models\Grade';
     }
+
+    /**
+     * hardDelete
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function hardDelete($id)
+    {
+        $this->cache->remove($id);
+        $this->cache->remove('grades');
+        $grade = $this->delete($id);
+        return $grade;
+    }
 }

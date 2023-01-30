@@ -50,6 +50,7 @@ class ClassController extends Controller
                 $newClass = new ClassEntity($_class);
                 array_push($classes, $newClass);
             }
+            Log::debug("S-au returnat toate clasele.");
             return Response::json(["total_count" => $count, "classes" => $classes], HttpStatusCode::OK);
         } catch (Exception $e) {
 
@@ -70,6 +71,7 @@ class ClassController extends Controller
             if (!isset($_class))
                 return Response::make(ErrorAndSuccessMessages::getDataFailed, HttpStatusCode::BadRequest);
             $newClass = new ClassEntity($_class);
+            Log::debug("S-a returnat o clasa.");
             return Response::json(["class" => $newClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
@@ -89,6 +91,7 @@ class ClassController extends Controller
             $newClass = $this->classService->createClass($request);
             if (!isset($newClass))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Operatia de adaugare a unei clase s-a efectuat cu succes.");
             return Response::make(ErrorAndSuccessMessages::successRegistration, HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
@@ -113,6 +116,7 @@ class ClassController extends Controller
             $updatedClass = $this->classService->updateClass($request, $id);
             if (!isset($updatedClass))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Actualizarea clasei s-a efectuat cu succes.");
             return Response::json(["class" => $updatedClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);
@@ -135,6 +139,7 @@ class ClassController extends Controller
             $deletedClass = $this->classService->softDelete($id);
             if (!isset($deletedClass))
                 return Response::make(ErrorAndSuccessMessages::validationError, HttpStatusCode::BadRequest);
+            Log::debug("Stergere (logica) a clasei s-a efectuat cu succes.");
             return Response::json(["class" => $deletedClass], HttpStatusCode::OK);
         } catch (Exception $e) {
             Log::debug($e);

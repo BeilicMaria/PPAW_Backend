@@ -111,8 +111,8 @@ class SubjectService extends Repository
     public function updateSubject($request, $id)
     {
 
-        $this->cache->remove($id);
-        $this->cache->clear();
+        $this->cache->remove($id, 'subject');
+        $this->cache->remove('subjects');
         $subject = $this->find($id);
         $subject->name = $request->input('name');
         $subject->credits = $request->input('credits');
@@ -130,7 +130,7 @@ class SubjectService extends Repository
      */
     public function softDelete($id)
     {
-        $this->cache->remove($id);
+        $this->cache->remove($id, 'subject');
         $this->cache->remove('subjects');
         $subject = $this->find($id);
         $subject->deleted = true;

@@ -82,11 +82,14 @@ class MemoryCacheService implements ICache
      * @param  mixed $key
      * @return bool
      */
-    public function remove($key)
+    public function remove($key, $tags = null)
     {
         try {
             if (!is_string(($key))) {
                 $key = (string)$key;
+            }
+            if (isset($tags)) {
+                Cache::tags($tags)->flush();
             }
             Cache::forget($key);
             return true;

@@ -93,7 +93,7 @@ class ClassService extends Repository
             $this->cache->remove('classes');
         }
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:55|unique:users',
+            'name' => 'required|string|max:55',
             'schoolYear' => 'required|string|max:55',
             'archived' => 'required',
         ]);
@@ -115,7 +115,7 @@ class ClassService extends Repository
     public function updateClass($request, $id)
     {
         if ($this->cache->isSet($id)) {
-            $this->cache->remove($id);
+            $this->cache->remove($id, 'class');
             $this->cache->remove('classes');
         }
         $_class = $this->find($id);

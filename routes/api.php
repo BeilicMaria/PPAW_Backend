@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -21,7 +22,6 @@ use App\Http\Controllers\UserController;
 */
 
 //..............................THIS ROUTES ARE FOR PASSPORT............................
-Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
 
 //..............................THIS ROUTES ARE FOR  AUTHENTICATED USERS............................
@@ -48,4 +48,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('class/{id}', [ClassController::class, 'get']);
     Route::delete('class/{id}', [ClassController::class, 'delete']);
     Route::post('class/{id}', [ClassController::class, 'put']);
+      //..............................GRADE............................
+
 });
+Route::delete('grade/{id}', [GradeController::class, 'delete']);

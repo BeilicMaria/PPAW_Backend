@@ -89,11 +89,11 @@ class UserService extends Repository
         if (isset($filter) && $filter != "" && $filter != "null") {
             $users->where('lastName', 'like', "%" . $filter . "%")->orWhere('firstName', 'like', "%" . $filter . "%");
         }
-        if (isset($startDate) && $startDate !== 'null' && isset($endDate) && $endDate !== 'null') {
-            $users->whereBetween('created_at', [$startDate, $endDate]);
-        }
         if (isset($status) && $status !== 'null') {
             $users->where('status', '=', filter_var($status, FILTER_VALIDATE_BOOLEAN));
+        }
+        if (isset($startDate) && $startDate !== 'null' && isset($endDate) && $endDate !== 'null') {
+            $users->whereBetween('created_at', [$startDate, $endDate]);
         }
         $users->where('Fk_roleId', '!=', 1);
         $count = $users->count();

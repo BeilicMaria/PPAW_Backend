@@ -59,7 +59,7 @@ class LoginController extends Controller
                 $user = $this->userRepo->findBy('email', $request->email);
                 return response()->json(['user' => $user, 'access_token' => $accessToken], HttpStatusCode::OK);
             } else {
-                return response()->json(ErrorAndSuccessMessages::loginFailed, HttpStatusCode::Unauthorized);
+                return Response::make(ErrorAndSuccessMessages::loginFailed, HttpStatusCode::Unauthorized);
             }
         } catch (Exception $e) {
             Log::debug($e);
